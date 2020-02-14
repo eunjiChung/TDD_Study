@@ -40,15 +40,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     AppDelegate.configuration = Configuration.load()
-    api = API()
-
+    
+    api = API(server: AppDelegate.configuration.server)
+    let loginViewController = window?.rootViewController as? LoginViewController
+    loginViewController?.api = api
+    
+    setupListeners()
     return true
   }
   
   func showLogin() {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let loginController = storyboard.instantiateViewController(withIdentifier: "login") as? LoginViewController
+    loginController?.api = api
     window?.rootViewController = loginController
+  }
+  
+  func setupListeners() {
+    NotificationCenter.default.addObserver(forName: UserLoggedOutNotification, object: nil, queue: .main) { _ in
+      self.showLogin()
+    }
+    NotificationCenter.default.addObserver(forName: UserLoggedNotification, object: nil, queue: .main) { note in
+      if let userId = note.userInfo?[UserNotificationKey.userId] as? String {
+        self.handleLogin(userId: userId)
+      }
+    }
+  }
+  
+  func handleLogin(userId: String) {
+    self.userId = userId
+    
+    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    let tabController = storyboard.instantiateViewController(identifier: "tabController")
+    window?.rootViewController = tabController
   }
 }
 

@@ -67,6 +67,10 @@
 		0AF4B1E32237035400A8C9B6 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4B1E22237035400A8C9B6 /* API.swift */; };
 		0AF4B1E52237060100A8C9B6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4B1E42237060100A8C9B6 /* LoginViewController.swift */; };
 		4CDBC640227F74220043C1E0 /* DayDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CDBC63F227F74220043C1E0 /* DayDetailTableViewController.swift */; };
+		72BB3DB923F7038C00BD0E1C /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB3DB823F7038C00BD0E1C /* APITests.swift */; };
+		72BB3DBB23F70AD700BD0E1C /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB3DBA23F70AD700BD0E1C /* LoginViewControllerTests.swift */; };
+		72BB3DBD23F7101700BD0E1C /* ErrorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB3DBC23F7101700BD0E1C /* ErrorViewControllerTests.swift */; };
+		72BB3DBF23F7187100BD0E1C /* ErrorViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BB3DBE23F7187100BD0E1C /* ErrorViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +158,10 @@
 		0AF4B1E22237035400A8C9B6 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		0AF4B1E42237060100A8C9B6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		4CDBC63F227F74220043C1E0 /* DayDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayDetailTableViewController.swift; sourceTree = "<group>"; };
+		72BB3DB823F7038C00BD0E1C /* APITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
+		72BB3DBA23F70AD700BD0E1C /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
+		72BB3DBC23F7101700BD0E1C /* ErrorViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewControllerTests.swift; sourceTree = "<group>"; };
+		72BB3DBE23F7187100BD0E1C /* ErrorViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				0A749AC6229B6FF30059B978 /* CalendarViewControllerTests.swift */,
+				72BB3DBC23F7101700BD0E1C /* ErrorViewControllerTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -221,6 +230,9 @@
 			children = (
 				0A749ADA229B7FDB0059B978 /* CalendarModelTests.swift */,
 				0A749AE0229B8E560059B978 /* CalendarViewControllerTests.swift */,
+				72BB3DB823F7038C00BD0E1C /* APITests.swift */,
+				72BB3DBA23F70AD700BD0E1C /* LoginViewControllerTests.swift */,
+				72BB3DBE23F7187100BD0E1C /* ErrorViewControllerTests.swift */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -463,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A749ACA229B7D8F0059B978 /* MockAPI.swift in Sources */,
+				72BB3DBD23F7101700BD0E1C /* ErrorViewControllerTests.swift in Sources */,
 				0A749AC7229B6FF30059B978 /* CalendarViewControllerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -472,7 +485,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A749AE1229B8E560059B978 /* CalendarViewControllerTests.swift in Sources */,
+				72BB3DBF23F7187100BD0E1C /* ErrorViewControllerTests.swift in Sources */,
 				0A749ADF229B84EE0059B978 /* MockAPI.swift in Sources */,
+				72BB3DB923F7038C00BD0E1C /* APITests.swift in Sources */,
+				72BB3DBB23F70AD700BD0E1C /* LoginViewControllerTests.swift in Sources */,
 				0A749ADB229B7FDB0059B978 /* CalendarModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

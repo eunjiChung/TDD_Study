@@ -27,7 +27,14 @@
 /// THE SOFTWARE.
 
 import Foundation
-import UIKit
+
+let UserLoggedNotification = Notification.Name("user logged in")
+let UserLoggedOutNotification = Notification.Name("user logged out")
+
+// A key that will be used to get user's ID
+enum UserNotificationKey: String {
+  case userId
+}
 
 protocol APIDelegate: class {
   
@@ -48,14 +55,15 @@ protocol APIDelegate: class {
 }
 
 class API {
-  
-  let server = AppDelegate.configuration.server
+
+  let server: String
   let session: URLSession
   
   weak var delegate: APIDelegate?
   var token: Token?
   
-  init() {
+  init(server: String) {
+    self.server = server
     session = URLSession(configuration: .default)
   }
   
@@ -97,6 +105,9 @@ class API {
   }
 
   func handleToken(token: Token) {
+    let note = Notification(name: UserLoggedNotification, object: self, userInfo: [UserNotificationKey.userId: token.userID.uuidString])
+    NotificationCenter.default.post(note)
+    
     self.token = token
     Logger.logDebug("user \(token.userID)")
     DispatchQueue.main.async {
@@ -104,10 +115,14 @@ class API {
     }
   }
   
+  // Instead of direct calling back to AppDelegate,
+  // this calls the code indirectly through the notification center
+  // Now API has no direct dependency with delegate
   func logout() {
     token = nil
     delegate = nil
-    UIApplication.appDelegate.showLogin()
+    let note = Notification(name: UserLoggedOutNotification)
+    NotificationCenter.default.post(note)
   }
 
   func submitPO(po: PurchaseOrder) throws {

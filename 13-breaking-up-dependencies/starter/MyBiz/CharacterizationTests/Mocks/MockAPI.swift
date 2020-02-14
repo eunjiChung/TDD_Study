@@ -79,6 +79,10 @@ class MockAPI: API {
   var mockEvents: [Event] = []
   var mockEmployees: [Employee] = []
   var mockError: Error?
+  
+  init() {
+    super.init(server: "http://mockserver")
+  }
 
   override func getEvents() {
     DispatchQueue.main.async {
@@ -98,5 +102,10 @@ class MockAPI: API {
         self.delegate?.orgLoaded(org: self.mockEmployees)
       }
     }
+  }
+  
+  override func login(username: String, password: String) {
+    let token = Token(token: username, userID: UUID())
+    handleToken(token: token)
   }
 }
