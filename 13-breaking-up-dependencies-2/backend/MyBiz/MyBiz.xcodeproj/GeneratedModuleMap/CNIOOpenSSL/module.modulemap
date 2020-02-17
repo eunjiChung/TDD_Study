@@ -1,0 +1,4 @@
+module CNIOOpenSSL {
+    umbrella "/Users/CHUNGEUNJI/Documents/TDD_TIL/13-breaking-up-dependencies-2/backend/MyBiz/.build/checkouts/swift-nio-ssl/Sources/CNIOOpenSSL/include"
+    export *
+}
