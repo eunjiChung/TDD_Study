@@ -1,0 +1,4 @@
+module CCryptoOpenSSL {
+    umbrella "/Users/eunjichung/Documents/TestProjects/TDD_Study/13-breaking-up-dependencies-3/backend/MyBiz/.build/checkouts/crypto/Sources/CCryptoOpenSSL/include"
+    export *
+}

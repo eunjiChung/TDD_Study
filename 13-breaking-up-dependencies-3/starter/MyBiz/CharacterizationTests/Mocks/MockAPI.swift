@@ -80,6 +80,16 @@ class MockAPI: API {
   var mockEmployees: [Employee] = []
   var mockError: Error?
 
+  // ??? override 안써줘도 되나?
+  init() {
+    super.init(server: "http://mockserver")
+  }
+ 
+  override func login(username: String, password: String) {
+    let token = Token(token: username, userID: UUID())
+    handleToken(token: token)
+  }
+  
   override func getEvents() {
     DispatchQueue.main.async {
       if let error = self.mockError {
