@@ -40,15 +40,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
     AppDelegate.configuration = Configuration.load()
-    api = API()
+    api = API(server: AppDelegate.configuration.server)
+    
+    // sets the api when the app is first loaded.
+    let loginViewController = window?.rootViewController as? LoginViewController
+    loginViewController?.api = api
 
+    setupListener()
+    
     return true
   }
   
   func showLogin() {
     let storyboard = UIStoryboard(name: "Main", bundle: nil)
     let loginController = storyboard.instantiateViewController(withIdentifier: "login") as? LoginViewController
+    loginController?.api = api
     window?.rootViewController = loginController
+  }
+  
+  func handleLogin(userId: String) {
+    self.userId = userId
+    
+    let tabController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "tabController")
+      window?.rootViewController = tabController
+  }
+  
+  func setupListener() {
+    // name: 알림을 식별하는 태그
+    // object: sender가 Observer에게 보내고자하는 객체
+    // userInfo: Notification과 관련된 값 또는 객체 저장소
+    NotificationCenter.default.addObserver(forName: UserLoggedOutNotification, object: nil, queue: .main) { _ in
+      self.showLogin()
+    }
+    NotificationCenter.default.addObserver(forName: UserLoggedInNotification, object: nil, queue: .main) { (note) in
+      if let userId = note.userInfo?[UserNotificationKey.userId] as? String {
+        self.handleLogin(userId: userId)
+      }
+    }
   }
 }
 

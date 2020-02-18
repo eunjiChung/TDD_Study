@@ -27,7 +27,13 @@
 /// THE SOFTWARE.
 
 import Foundation
-import UIKit
+
+let UserLoggedOutNotification = Notification.Name("user logged out")
+let UserLoggedInNotification = Notification.Name("user logged in")
+
+enum UserNotificationKey: String {
+  case userId
+}
 
 protocol APIDelegate: class {
   
@@ -49,13 +55,14 @@ protocol APIDelegate: class {
 
 class API {
   
-  let server = AppDelegate.configuration.server
+  let server: String
   let session: URLSession
   
   weak var delegate: APIDelegate?
   var token: Token?
   
-  init() {
+  init(server: String) {
+    self.server = server
     session = URLSession(configuration: .default)
   }
   
@@ -100,6 +107,8 @@ class API {
     self.token = token
     Logger.logDebug("user \(token.userID)")
     DispatchQueue.main.async {
+      let note = Notification(name: UserLoggedInNotification)
+      NotificationCenter.default.post(note)
       self.delegate?.loginSucceeded(userId: token.userID.uuidString)
     }
   }
@@ -107,7 +116,8 @@ class API {
   func logout() {
     token = nil
     delegate = nil
-    UIApplication.appDelegate.showLogin()
+    let note = Notification(name: UserLoggedOutNotification)
+    NotificationCenter.default.post(note)
   }
 
   func submitPO(po: PurchaseOrder) throws {

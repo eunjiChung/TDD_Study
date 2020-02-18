@@ -30,10 +30,12 @@ import UIKit
 
 class ErrorViewController: UIViewController {
   
-  enum AlertType {
-    case login
-    case general
+  struct SecondaryAction {
+    let title: String
+    let action: (() -> Void)
   }
+  
+  var secondaryAction: SecondaryAction? = nil
   
   @IBOutlet weak var okButton: UIButton!
   @IBOutlet weak var secondaryButton: UIButton!
@@ -41,7 +43,6 @@ class ErrorViewController: UIViewController {
   @IBOutlet weak var titleLabel: UILabel!
   @IBOutlet weak var subtitleLabel: UILabel!
   
-  var type: AlertType = .general
   var alertTitle: String = ""
   var subtitle: String? = nil
   var skin: Skin? = nil
@@ -52,13 +53,7 @@ class ErrorViewController: UIViewController {
     alertView.layer.cornerRadius = 12
     alertView.layer.masksToBounds = true
 
-    switch type {
-    case .general:
-      secondaryButton.removeFromSuperview()
-    case .login:
-      setupLogin()
-    }
-    
+    updateAction()
     updateTitles()
     updateSkin()
   }
@@ -79,13 +74,17 @@ class ErrorViewController: UIViewController {
                         with: skin)
   }
   
+  private func updateAction() {
+    guard let action = secondaryAction else {
+      secondaryButton.removeFromSuperview()
+      return
+    }
+    secondaryButton.setTitle(action.title, for: .normal)
+  }
+  
   func set(title: String, subtitle: String?) {
     self.alertTitle = title
     self.subtitle = subtitle
-  }
-  
-  private func setupLogin() {
-    secondaryButton.setTitle("Try Again", for: .normal)
   }
   
   
@@ -94,13 +93,10 @@ class ErrorViewController: UIViewController {
   }
   
   @IBAction func secondaryAction(_ sender: Any) {
-    switch type {
-    case .login:
-      let loginVC = presentingViewController as? LoginViewController
-      self.dismiss(animated: true) {
-        loginVC?.signIn(self)
-      }
-    default:
+    if let action = secondaryAction {
+      dismiss(animated: true, completion: nil)
+      action.action()
+    } else {
       Logger.logFatal("no action defined.")
     }
   }
