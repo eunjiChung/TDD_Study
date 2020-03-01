@@ -76,6 +76,8 @@ class DogPatchClientTests: XCTestCase {
                                      statusCode: Int = 200,
                                      error: Error? = nil,
                                      line: UInt = #line) {
+    // #line = 해당 라인의 literal...
+    print("What is this????????? ", line) // > 호출한 줄의 line 번호가 들어간다
     // given
     mockSession.givenDispatchQueue()
     sut = DogPatchClient(baseURL: baseURL,
@@ -87,6 +89,7 @@ class DogPatchClientTests: XCTestCase {
     var thread: Thread!
     let mockTask = sut.getDogs { (dogs, error) in
       thread = Thread.current
+      // 왜 completion은 호출되지 않았다고 하는지...?
       expect.fulfill()
     } as! MockURLSessionDataTask
     let repsonse = HTTPURLResponse(url: getDogsURL,
@@ -96,8 +99,9 @@ class DogPatchClientTests: XCTestCase {
     mockTask.completionHandler(data, repsonse, error)
     
     // then
+    // waitForExpectation...?
     waitForExpectations(timeout: 0.2) { (_) in
-      XCTAssertTrue(thread.isMainThread, line: line)
+      XCTAssertTrue(thread.isMainThread, line: line) // https://www.iosdev.recipes/xctest/custom-assertions-file-and-line/
     }
   }
   
@@ -225,7 +229,8 @@ class DogPatchClientTests: XCTestCase {
 
 class MockURLSession: URLSession {
   
-  // responseQueue와 queue의 차이...?
+  // MockURLSession에서 쓰는 queue는 아래 givenDispatchQueue
+  // DogPatchClient에서 쓰는 queue는 Main queue
   var queue: DispatchQueue? = nil
   
   func givenDispatchQueue() {
@@ -240,11 +245,13 @@ class MockURLSession: URLSession {
 
 class MockURLSessionDataTask: URLSessionDataTask {
   
-  // 이건 왜 그냥 URLResponse일까...?
+  // URLResponse
+  // HTTPURLResponse보다는 상위 클래스.
+  // 어차피 URLSession을 통해 받는 response는 모두 HTTPURLResponse의 instance이다.
+  // > 확장성을 위한 선택...?
   var completionHandler: (Data?, URLResponse?, Error?) -> Void
   var url: URL
   
-  // 근데 왜 queue를 mock에도 돌리고, client에서도 돌리지...?
   init(completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void,
        url: URL,
        queue: DispatchQueue?) {
